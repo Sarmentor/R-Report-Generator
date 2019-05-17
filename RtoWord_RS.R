@@ -37,7 +37,7 @@ scatterPlot <- function(ip){
 writing <- function(what="text",vars.name.pass=NULL,vars.val.pass=NULL,analysis=NULL){
   
   
-    
+  
   
   if(what=="text"){
     
@@ -45,7 +45,7 @@ writing <- function(what="text",vars.name.pass=NULL,vars.val.pass=NULL,analysis=
       TextInfomation1 <<-  paste(vars.name.pass, " mean is:", mean(data[,vars.name.pass]))
       dyn.command <- paste(dyn.command,'body_add_par(TextInfomation1, style = "Normal") %>%') 
       dyn.command <<- paste(dyn.command,'body_add_par("", style = "Normal") %>%') # blank paragraph
-        
+      
     }
     
     if(analysis=="sd"){
@@ -68,40 +68,32 @@ writing <- function(what="text",vars.name.pass=NULL,vars.val.pass=NULL,analysis=
   
   if(what=="scatter"){
     src3 <<- scatterPlot(data[,paste(vars.name.pass)])
-    Textscatter <<-  'Scatter Plot is: '
-    dyn.command <- paste(dyn.command,'body_add_par(Textscatter, style = "Normal") %>%')
-    dyn.command <<- paste(dyn.command,'body_add_par("", style = "Normal") %>%') # blank paragraph
+    dyn.command <<- paste(dyn.command,'body_add_par("Scatter Plot is: ", style = "Normal") %>%') # blank paragraph
     dyn.command <<- paste(dyn.command,'body_add_img(src = src3, width = 5, height = 6, style = "centered") %>%')
     dyn.command <<- paste(dyn.command,'body_add_par("", style = "Normal") %>%') # blank paragraph
   }
   
   if(what=="bar"){
     src1 <<- barPlot(data[,paste(vars.name.pass)])
-    Textbar <<-  'Bar Plot is: '
-    dyn.command <- paste(dyn.command,'body_add_par(Textbar, style = "Normal") %>%')
-    dyn.command <<- paste(dyn.command,'body_add_par("", style = "Normal") %>%') # blank paragraph
+    dyn.command <<- paste(dyn.command,'body_add_par("Bar Plot is: ", style = "Normal") %>%') # blank paragraph
     dyn.command <<- paste(dyn.command,'body_add_img(src = src1, width = 5, height = 6, style = "centered") %>%')
     dyn.command <<- paste(dyn.command,'body_add_par("", style = "Normal") %>%') # blank paragraph
   }
   
   if(what=="box"){
     src2 <<- boxPlot(data[,paste(vars.name.pass)])
-    Textbox <<-  'Box Plot is: '
-    dyn.command <- paste(dyn.command,'body_add_par(Textbox, style = "Normal") %>%')
-    dyn.command <<- paste(dyn.command,'body_add_par("", style = "Normal") %>%') # blank paragraph
+    dyn.command <<- paste(dyn.command,'body_add_par("Box Plot is: ", style = "Normal") %>%') # blank paragraph
     dyn.command <<- paste(dyn.command,'body_add_img(src = src2, width = 5, height = 6, style = "centered") %>%')
     dyn.command <<- paste(dyn.command,'body_add_par("", style = "Normal") %>%') # blank paragraph
   }
   
   if(what=="table"){
     TableToSave <<- head(data)
-    Texthead <<-  'A short example of your data to analyze: '
-    dyn.command <- paste(dyn.command,'body_add_par(Texthead, style = "Normal") %>%')
-    dyn.command <<- paste(dyn.command,'body_add_par("", style = "Normal") %>%') # blank paragraph
+    dyn.command <<- paste(dyn.command,'body_add_par("A short example of your data to analyze: ", style = "Normal") %>%') # blank paragraph
     dyn.command <<- paste(dyn.command, 'body_add_table(TableToSave, style = "table_template") %>%') 
     dyn.command <<- paste(dyn.command,'body_add_par("", style = "Normal") %>%') # blank paragraph
   }
-
+  
   
 }
 
@@ -125,7 +117,7 @@ for(var in 1:(ncol(data)-1)){
   writing(what = "scatter",vars.name.pass = paste(names(data)[var]),analysis = NULL)
   
   dyn.command <<- noquote(stri_replace_last_fixed(dyn.command, " %>%", ""))
-
+  
   #browser()
   
   eval(parse(text=dyn.command))
@@ -133,5 +125,3 @@ for(var in 1:(ncol(data)-1)){
   print(my_doc, target = "Temp.docx")
   
 }
-
-
